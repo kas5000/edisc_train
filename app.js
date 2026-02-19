@@ -31,7 +31,6 @@ function formatDate(iso) {
 
 function makeMockDocs(count = 50) {
   const custodians = ["A. Rivera", "B. Chen", "C. Patel", "D. Nguyen", "E. Johnson", "F. Smith"];
-  const doctypes   = ["Email", "Memo", "Contract", "Invoice", "Meeting Notes", "Chat Log"];
   const tags       = ["NDA", "Termination", "Pricing", "IP", "HR", "Compliance", "Litigation Hold"];
   const subjects   = [
     "Follow-up on vendor terms",
@@ -67,7 +66,6 @@ function makeMockDocs(count = 50) {
     const seed = hashStringToInt(id);
 
     const custodian = pick(custodians, seed);
-    const doctype = pick(doctypes, seed >> 1);
     const tag = pick(tags, seed >> 2);
     const subject = pick(subjects, seed >> 3);
 
@@ -78,14 +76,13 @@ function makeMockDocs(count = 50) {
     const isoDate = `${year}-${String(month).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
 
     // Base “ground truth” for training filters (not legal advice)
-    const privilege = (doctype === "Email" && (seed % 5 === 0)) ? "Privileged" : "Not Privileged";
+    const privilege = (1 && (seed % 5 === 0)) ? "Privileged" : "Not Privileged";
     const responsive = (tag === "Litigation Hold" || tag === "Termination" || tag === "NDA") ? "Responsive" : "Unreviewed";
 
     const body =
       `Subject: ${subject}\n` +
       `Custodian: ${custodian}\n` +
       `Date: ${isoDate}\n` +
-      `Doc Type: ${doctype}\n` +
       `Tag: ${tag}\n\n` +
       pick(bodies, seed >> 4) + "\n\n" +
       "— End of document —";
@@ -94,7 +91,6 @@ function makeMockDocs(count = 50) {
       id,
       title: subject,
       custodian,
-      doctype,
       date: isoDate,
       tag,
       // “Ground truth” metadata (for filtering only)
@@ -116,7 +112,6 @@ let selectedId = null;
 const els = {
   q: document.getElementById("q"),
   custodian: document.getElementById("custodian"),
-  doctype: document.getElementById("doctype"),
   tag: document.getElementById("tag"),
   privFilter: document.getElementById("privFilter"),
   respFilter: document.getElementById("respFilter"),
@@ -157,21 +152,18 @@ function fillSelect(selectEl, values) {
 }
 
 fillSelect(els.custodian, uniqueValues(DOCS, "custodian"));
-fillSelect(els.doctype, uniqueValues(DOCS, "doctype"));
 fillSelect(els.tag, uniqueValues(DOCS, "tag"));
 
 // ---------- Filtering ----------
 function applyFilters() {
   const q = (els.q.value || "").trim().toLowerCase();
   const custodian = els.custodian.value;
-  const doctype = els.doctype.value;
   const tag = els.tag.value;
   const priv = els.privFilter.value;
   const resp = els.respFilter.value;
 
   filtered = DOCS.filter(d => {
     if (custodian && d.custodian !== custodian) return false;
-    if (doctype && d.doctype !== doctype) return false;
     if (tag && d.tag !== tag) return false;
     if (priv && d.privilege !== priv) return false;
     if (resp && d.responsive !== resp) return false;
@@ -195,7 +187,6 @@ function applyFilters() {
 function clearFilters() {
   els.q.value = "";
   els.custodian.value = "";
-  els.doctype.value = "";
   els.tag.value = "";
   els.privFilter.value = "";
   els.respFilter.value = "";
@@ -237,7 +228,6 @@ function renderList() {
       <td>${d.id}</td>
       <td>${escapeHtml(d.title)}</td>
       <td>${escapeHtml(d.custodian)}</td>
-      <td>${escapeHtml(d.doctype)}</td>
       <td>${escapeHtml(formatDate(d.date))}</td>
       <td>${escapeHtml(d.tag)}</td>
       <td>${codingSummary(d.id)}</td>
@@ -289,7 +279,7 @@ function selectDoc(docId) {
   els.docBadge.textContent = docId;
   els.docMeta.innerHTML =
     `<div><b>${escapeHtml(d.title)}</b></div>` +
-    `<div>Custodian: ${escapeHtml(d.custodian)} • Type: ${escapeHtml(d.doctype)} • Date: ${escapeHtml(formatDate(d.date))}</div>` +
+    `<div>Custodian: ${escapeHtml(d.custodian)} • Date: ${escapeHtml(formatDate(d.date))}</div>` +
     `<div>Training Tag: ${escapeHtml(d.tag)} • Training Privilege: ${escapeHtml(d.privilege)} • Training Responsive: ${escapeHtml(d.responsive)}</div>`;
 
   els.docBody.textContent = d.body;
@@ -366,7 +356,7 @@ function toCsvValue(v) {
 }
 
 function exportCsv() {
-  const headers = ["doc_id", "title", "custodian", "doctype", "date", "tag", "resp_code", "priv_code", "issues", "notes", "saved_at"];
+  const headers = ["doc_id", "title", "custodian", "date", "tag", "resp_code", "priv_code", "issues", "notes", "saved_at"];
   const rows = [headers.join(",")];
 
   DOCS.forEach(d => {
@@ -375,7 +365,6 @@ function exportCsv() {
       toCsvValue(d.id),
       toCsvValue(d.title),
       toCsvValue(d.custodian),
-      toCsvValue(d.doctype),
       toCsvValue(d.date),
       toCsvValue(d.tag),
       toCsvValue(c.resp || ""),
@@ -413,7 +402,6 @@ function resetCoding() {
 ["input", "change"].forEach(evt => {
   els.q.addEventListener(evt, applyFilters);
   els.custodian.addEventListener(evt, applyFilters);
-  els.doctype.addEventListener(evt, applyFilters);
   els.tag.addEventListener(evt, applyFilters);
   els.privFilter.addEventListener(evt, applyFilters);
   els.respFilter.addEventListener(evt, applyFilters);
@@ -437,6 +425,7 @@ document.addEventListener("keydown", (e) => {
 applyFilters();
 selectDoc(filtered[0]?.id || null);
 updateStats();
+
 
 
 
