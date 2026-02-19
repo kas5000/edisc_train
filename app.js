@@ -218,7 +218,7 @@ function codingSummary(docId) {
 
   function formatPriv(p){
     if (p === "Privileged") return '<span class="code-privileged">Privileged</span>';
-    if (p === "Not Privileged") return '<span class="code-muted">Not Privileged</span>';
+    if (p === "Not Privileged") return '<span class="code-notprivileged">Not Privileged</span>';
     return '<span class="code-unreviewed">Unreviewed</span>';
   }
 
@@ -437,6 +437,7 @@ document.addEventListener("keydown", (e) => {
 applyFilters();
 selectDoc(filtered[0]?.id || null);
 updateStats();
+
 
 
 
