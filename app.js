@@ -2,6 +2,7 @@
    - 50 mock docs generated deterministically
    - Coding saved to localStorage per browser/user
 */
+console.log("APP.JS LOADED — version 2026-02-19-1");
 
 const STORAGE_KEY = "mini-edisco-coding-v2";
 
@@ -417,4 +418,5 @@ document.addEventListener("keydown", (e) => {
 applyFilters();
 selectDoc(filtered[0]?.id || null);
 updateStats();
+
 
