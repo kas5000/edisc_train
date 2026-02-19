@@ -20,6 +20,23 @@ body{
               var(--bg);
   color:var(--text);
 }
+.code-responsive{
+  font-weight: 800;
+  color: #32d296; /* green */
+}
+
+.code-privileged{
+  font-weight: 800;
+  color: #ff5c6a; /* red */
+}
+
+.code-muted{
+  color: #9aa3c7; /* light gray */
+}
+
+.code-unreviewed{
+  color: #aab3dd; /* neutral */
+}
 
 .topbar{
   display:flex;
@@ -234,3 +251,4 @@ textarea{ resize:vertical; }
   .topbar{ flex-direction:column; align-items:flex-start; gap:10px; }
   .table th{ top: 108px; }
 }
+
