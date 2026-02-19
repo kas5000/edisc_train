@@ -3,7 +3,7 @@
    - Coding saved to localStorage per browser/user
 */
 
-const STORAGE_KEY = "mini-edisco-coding-v1";
+const STORAGE_KEY = "mini-edisco-coding-v2";
 
 function hashStringToInt(str) {
   // deterministic-ish hash for mock text selection
@@ -37,6 +37,8 @@ function makeMockDocs(count = 50) {
     "NDA execution status",
     "Privilege review note",
     "Compliance training schedule",
+    "Breach of contract",
+    "Contract modification request",
     "Hold notice acknowledgement",
     "IP assignment question"
   ];
@@ -49,7 +51,9 @@ function makeMockDocs(count = 50) {
     "Noted that the vendor has requested a 30-day cure period. We may want 10 days for non-payment defaults.",
     "The invoice includes an extra line item. Please confirm whether the fee was authorized under the SOW.",
     "If termination is contemplated, document the performance issues and ensure HR policy is followed.",
-    "The agreement references IP ownership. Confirm whether work product is a ‘work made for hire’ where applicable."
+    "The agreement references IP ownership. Confirm whether work product is a ‘work made for hire’ where applicable.",
+    "What time are we teeing off on Saturday?",
+    "Can you share the project timeline with the team? Also, did you see the Falcons win last night? Unbelievable finish!"
   ];
 
   const docs = [];
@@ -70,7 +74,7 @@ function makeMockDocs(count = 50) {
 
     // Base “ground truth” for training filters (not legal advice)
     const privilege = (doctype === "Email" && (seed % 5 === 0)) ? "Privileged" : "Not Privileged";
-    const responsive = (tag === "Litigation Hold" || tag === "Termination" || tag === "NDA") ? "Responsive" : "Needs Review";
+    const responsive = (tag === "Litigation Hold" || tag === "Termination" || tag === "NDA") ? "Responsive" : "Unreviewed";
 
     const body =
       `Subject: ${subject}\n` +
@@ -80,7 +84,7 @@ function makeMockDocs(count = 50) {
       `Tag: ${tag}\n\n` +
       pick(bodies, seed >> 4) + "\n\n" +
       pick(bodies, seed >> 5) + "\n\n" +
-      "— End of mock document —";
+      "— End of document —";
 
     docs.push({
       id,
@@ -198,8 +202,8 @@ function clearFilters() {
 function codingSummary(docId) {
   const c = coding[docId];
   if (!c) return "—";
-  const r = c.resp || "Needs Review";
-  const p = c.priv || "Needs Review";
+  const r = c.resp || "Unreviewed";
+  const p = c.priv || "Unreviewed";
   return `${r} / ${p}`;
 }
 
@@ -272,9 +276,9 @@ function selectDoc(docId) {
   els.docBody.textContent = d.body;
 
   // load coding into form
-  const c = coding[docId] || { resp:"Needs Review", priv:"Needs Review", issues:"", notes:"" };
-  els.respCode.value = c.resp || "Needs Review";
-  els.privCode.value = c.priv || "Needs Review";
+  const c = coding[docId] || { resp:"Unreviewed", priv:"Unreviewed", issues:"", notes:"" };
+  els.respCode.value = c.resp || "Unreviewed";
+  els.privCode.value = c.priv || "Unreviewed";
   els.issues.value = c.issues || "";
   els.notes.value = c.notes || "";
 
