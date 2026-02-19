@@ -83,7 +83,6 @@ function makeMockDocs(count = 50) {
       `Doc Type: ${doctype}\n` +
       `Tag: ${tag}\n\n` +
       pick(bodies, seed >> 4) + "\n\n" +
-      pick(bodies, seed >> 5) + "\n\n" +
       "— End of document —";
 
     docs.push({
@@ -103,7 +102,7 @@ function makeMockDocs(count = 50) {
 }
 
 // ---------- State ----------
-const DOCS = makeMockDocs(50);
+const DOCS = makeMockDocs(25);
 let coding = loadCoding();            // { [docId]: {resp, priv, issues, notes, savedAt} }
 let filtered = [...DOCS];
 let selectedId = null;
@@ -418,3 +417,4 @@ document.addEventListener("keydown", (e) => {
 applyFilters();
 selectDoc(filtered[0]?.id || null);
 updateStats();
+
