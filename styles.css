@@ -152,7 +152,7 @@ textarea{ resize:vertical; }
   color:var(--muted);
   font-weight:700;
   position: sticky;
-  top: 62px; /* below topbar */
+  top: 0px; /* below topbar */
   background: rgba(18,26,51,.92);
   backdrop-filter: blur(10px);
   z-index: 1;
