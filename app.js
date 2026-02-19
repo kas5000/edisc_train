@@ -240,7 +240,8 @@ function renderList() {
       <td>${escapeHtml(d.doctype)}</td>
       <td>${escapeHtml(formatDate(d.date))}</td>
       <td>${escapeHtml(d.tag)}</td>
-      <td>${escapeHtml(codingSummary(d.id))}</td>
+      <td>${codingSummary(d.id)}</td>
+
     `;
 
     tr.addEventListener("click", () => selectDoc(d.id));
@@ -436,6 +437,7 @@ document.addEventListener("keydown", (e) => {
 applyFilters();
 selectDoc(filtered[0]?.id || null);
 updateStats();
+
 
 
 
