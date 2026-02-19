@@ -137,10 +137,14 @@ textarea{ resize:vertical; }
 
 .table{
   width:100%;
-  border-collapse: collapse;
   margin-top:10px;
   overflow:hidden;
   border-radius:14px;
+  .table{
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
 }
 .table th, .table td{
   padding:10px 10px;
@@ -152,10 +156,9 @@ textarea{ resize:vertical; }
   color:var(--muted);
   font-weight:700;
   position: sticky;
-  top: 0px; /* below topbar */
-  background: rgba(18,26,51,.92);
-  backdrop-filter: blur(10px);
-  z-index: 1;
+  top: 0;
+  background: rgba(18,26,51,.98);
+  z-index: 3;
 }
 .table tbody tr{
   cursor:pointer;
@@ -212,6 +215,13 @@ textarea{ resize:vertical; }
   color: rgba(170,179,221,.8);
   font-size:12px;
   border-top:1px solid var(--border);
+}
+
+.list{
+  display:flex;
+  flex-direction:column;
+  max-height: calc(100vh - 140px);
+  overflow:auto;
 }
 
 @media (max-width: 1100px){
