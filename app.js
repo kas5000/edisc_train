@@ -16,7 +16,11 @@ function hashStringToInt(str) {
   return (h >>> 0);
 }
 
-function pick(arr, n) { return arr[n % arr.length]; }
+function pick(arr, n) { 
+  if (!Array.isArray(arr) || arr.length === 0) return "";
+  const idx = ((n % arr.length) + arr.length) % arr.length;
+  return arr[idx];
+}
 
 function formatDate(iso) {
   // ISO yyyy-mm-dd -> readable
@@ -418,5 +422,6 @@ document.addEventListener("keydown", (e) => {
 applyFilters();
 selectDoc(filtered[0]?.id || null);
 updateStats();
+
 
 
