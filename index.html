@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mini E-Discovery Review (Training)</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">ED</div>
+      <div>
+        <div class="title">Mini E-Discovery Review</div>
+        <div class="subtitle">Training UI • 50 mock documents • local-only coding</div>
+      </div>
+    </div>
+
+    <div class="top-actions">
+      <button id="btnExport" class="btn">Export Coding (CSV)</button>
+      <button id="btnReset" class="btn btn-secondary" title="Clears only your local coding on this device/browser">Reset My Coding</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <!-- LEFT: filters -->
+    <aside class="panel filters">
+      <h2>Search & Filters</h2>
+
+      <label class="field">
+        <span>Search</span>
+        <input id="q" type="search" placeholder='Try: "NDA", "invoice", "termination"' autocomplete="off" />
+      </label>
+
+      <div class="grid2">
+        <label class="field">
+          <span>Custodian</span>
+          <select id="custodian">
+            <option value="">All</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Doc Type</span>
+          <select id="doctype">
+            <option value="">All</option>
+          </select>
+        </label>
+      </div>
+
+      <label class="field">
+        <span>Tag</span>
+        <select id="tag">
+          <option value="">All</option>
+        </select>
+      </label>
+
+      <div class="grid2">
+        <label class="field">
+          <span>Privilege</span>
+          <select id="privFilter">
+            <option value="">All</option>
+            <option value="Privileged">Privileged</option>
+            <option value="Not Privileged">Not Privileged</option>
+            <option value="Needs Review">Needs Review</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Responsive</span>
+          <select id="respFilter">
+            <option value="">All</option>
+            <option value="Responsive">Responsive</option>
+            <option value="Non-Responsive">Non-Responsive</option>
+            <option value="Needs Review">Needs Review</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="statLabel">Showing</div>
+          <div id="statShowing" class="statValue">—</div>
+        </div>
+        <div class="stat">
+          <div class="statLabel">Coded (you)</div>
+          <div id="statCoded" class="statValue">—</div>
+        </div>
+      </div>
+
+      <button id="btnClearFilters" class="btn btn-secondary full">Clear Filters</button>
+
+      <hr class="sep" />
+
+      <h3>Review Navigation</h3>
+      <div class="navrow">
+        <button id="btnPrev" class="btn btn-secondary">← Prev</button>
+        <button id="btnNext" class="btn">Next →</button>
+      </div>
+
+      <div class="hint">
+        Tip: this is training-only. Your coding is saved only in <b>your</b> browser (localStorage), not shared.
+      </div>
+    </aside>
+
+    <!-- CENTER: list -->
+    <section class="panel list">
+      <div class="listHeader">
+        <h2>Document List</h2>
+        <div class="listMeta">
+          <span id="listMeta">—</span>
+        </div>
+      </div>
+
+      <table class="table" aria-label="Document table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Custodian</th>
+            <th>Type</th>
+            <th>Date</th>
+            <th>Tag</th>
+            <th>Coding (you)</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </section>
+
+    <!-- RIGHT: viewer -->
+    <aside class="panel viewer">
+      <div class="viewerHeader">
+        <h2>Viewer</h2>
+        <div id="docBadge" class="badge">—</div>
+      </div>
+
+      <div id="docMeta" class="docMeta">Select a document.</div>
+
+      <div class="docBodyWrap">
+        <pre id="docBody" class="docBody"></pre>
+      </div>
+
+      <hr class="sep" />
+
+      <h3>Coding Panel (you)</h3>
+
+      <div class="grid2">
+        <label class="field">
+          <span>Responsive</span>
+          <select id="respCode">
+            <option value="Needs Review">Needs Review</option>
+            <option value="Responsive">Responsive</option>
+            <option value="Non-Responsive">Non-Responsive</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Privilege</span>
+          <select id="privCode">
+            <option value="Needs Review">Needs Review</option>
+            <option value="Not Privileged">Not Privileged</option>
+            <option value="Privileged">Privileged</option>
+          </select>
+        </label>
+      </div>
+
+      <label class="field">
+        <span>Issues (comma-separated)</span>
+        <input id="issues" type="text" placeholder="e.g., termination, pricing, NDA" />
+      </label>
+
+      <label class="field">
+        <span>Notes</span>
+        <textarea id="notes" rows="5" placeholder="Your review notes…"></textarea>
+      </label>
+
+      <div class="saveRow">
+        <div id="saveStatus" class="saveStatus">Not saved yet</div>
+        <button id="btnMarkCoded" class="btn">Save Coding</button>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="footer">
+    <span>Mini E-Discovery Review UI • static • no backend • training only</span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
