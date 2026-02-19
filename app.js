@@ -205,10 +205,24 @@ function clearFilters() {
 // ---------- Rendering ----------
 function codingSummary(docId) {
   const c = coding[docId];
-  if (!c) return "—";
-  const r = c.resp || "Unreviewed";
-  const p = c.priv || "Unreviewed";
-  return `${r} / ${p}`;
+  if (!c) return '<span class="code-unreviewed">Unreviewed</span>';
+
+  const resp = c.resp || "Unreviewed";
+  const priv = c.priv || "Unreviewed";
+
+  function formatResp(r){
+    if (r === "Responsive") return '<span class="code-responsive">Responsive</span>';
+    if (r === "Non-Responsive") return '<span class="code-muted">Non-Responsive</span>';
+    return '<span class="code-unreviewed">Unreviewed</span>';
+  }
+
+  function formatPriv(p){
+    if (p === "Privileged") return '<span class="code-privileged">Privileged</span>';
+    if (p === "Not Privileged") return '<span class="code-muted">Not Privileged</span>';
+    return '<span class="code-unreviewed">Unreviewed</span>';
+  }
+
+  return `${formatResp(resp)} / ${formatPriv(priv)}`;
 }
 
 function renderList() {
@@ -422,6 +436,7 @@ document.addEventListener("keydown", (e) => {
 applyFilters();
 selectDoc(filtered[0]?.id || null);
 updateStats();
+
 
 
 
